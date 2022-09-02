@@ -1,5 +1,5 @@
 # pyodide-for-v3-extension
-Example of modifications required to make pyodide usable within a Chrome extension with manifest v3. Code is built js of `pyodide`, copied and then modified.
+Example of modifications required to make pyodide usable within a Chrome extension with manifest v3. Code is build output of `pyodide`, copied and then modified.
 
 Start:
 
