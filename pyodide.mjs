@@ -545,8 +545,6 @@ async function loadPyodide(options = {}) {
     })(Module, config.homedir);
   const moduleLoaded = new Promise((r) => (Module.postRun = r));
   Module.locateFile = (path) => config.indexURL + path;
-  const scriptSrc = `${config.indexURL}pyodide.asm.js`;
-  await loadScript(scriptSrc),
     await _createPyodideModule(Module),
     await moduleLoaded,
     (Module.locateFile = (path) => {
