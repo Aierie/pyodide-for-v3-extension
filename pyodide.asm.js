@@ -4027,7 +4027,7 @@ var _createPyodideModule = (() => {
             cls = Module.getPyProxyClass(flags);
           if (
             (256 & flags
-              ? ((target = Reflect.construct(Function, [], cls)),
+              ? ((target = Reflect.construct(class {}, [], cls)),
                 delete target.length,
                 delete target.name,
                 (target.prototype = void 0))
@@ -4770,7 +4770,8 @@ var _createPyodideModule = (() => {
             );
           (file_name = API.repodata_packages[name].file_name),
             (uri = resolvePath(file_name, API.config.indexURL)),
-            (file_sub_resource_hash = API.package_loader.sub_resource_hash(
+            (file_sub_resource_hash = API.package_loader.sub_resource_hash.call(
+              {},
               API.repodata_packages[name].sha256
             ));
         } else (uri = channel), (file_sub_resource_hash = void 0);
@@ -4968,7 +4969,7 @@ var _createPyodideModule = (() => {
               ),
                 console.error(err);
           }
-          API.importlib.invalidate_caches();
+          API.importlib.invalidate_caches.call();
         } finally {
           releaseLock();
         }
@@ -5519,7 +5520,7 @@ var _createPyodideModule = (() => {
       function runPython(code, options = {}) {
         return (
           options.globals || (options.globals = API.globals),
-          API.pyodide_code.eval_code(code, options.globals)
+          API.pyodide_code.eval_code.call({}, code, options.globals)
         );
       }
       async function loadPackagesFromImports(
@@ -5528,7 +5529,7 @@ var _createPyodideModule = (() => {
         errorCallback
       ) {
         let imports,
-          pyimports = API.pyodide_code.find_imports(code);
+          pyimports = API.pyodide_code.find_imports.call({}, code);
         try {
           imports = pyimports.toJs();
         } finally {
@@ -5549,17 +5550,17 @@ var _createPyodideModule = (() => {
       async function runPythonAsync(code, options = {}) {
         return (
           options.globals || (options.globals = API.globals),
-          await API.pyodide_code.eval_code_async(code, options.globals)
+          await API.pyodide_code.eval_code_async.call({}, code, options.globals)
         );
       }
       function registerJsModule(name, module) {
-        API.pyodide_ffi.register_js_module(name, module);
+        API.pyodide_ffi.register_js_module.call({}, name, module);
       }
       function registerComlink(Comlink) {
         API._Comlink = Comlink;
       }
       function unregisterJsModule(name) {
-        API.pyodide_ffi.unregister_js_module(name);
+        API.pyodide_ffi.unregister_js_module.call({}, name);
       }
       function toPy(
         obj,
@@ -5600,7 +5601,7 @@ var _createPyodideModule = (() => {
         return Hiwire.pop_value(result);
       }
       function pyimport(mod_name) {
-        return API.importlib.import_module(mod_name);
+        return API.importlib.import_module.call({}, mod_name);
       }
       function unpackArchive(buffer, format, options = {}) {
         if (
@@ -5628,13 +5629,17 @@ var _createPyodideModule = (() => {
         Module.__PyErr_CheckSignals() && Module._pythonexc2js();
       }
       (API.runPythonInternal = function (code) {
-        return API._pyodide._base.eval_code(code, API.runPythonInternal_dict);
+        return API._pyodide._base.eval_code.call(
+          {},
+          code,
+          API.runPythonInternal_dict
+        );
       }),
         (API.runPython = runPython),
         (API.runPythonAsync = runPythonAsync),
-        (API.saveState = () => API.pyodide_py._state.save_state()),
+        (API.saveState = () => API.pyodide_py._state.save_state.call()),
         (API.restoreState = (state) =>
-          API.pyodide_py._state.restore_state(state)),
+          API.pyodide_py._state.restore_state.call({}, state)),
         (exports.FS = void 0),
         (exports.PATH = void 0),
         (exports.ERRNO_CODES = void 0),

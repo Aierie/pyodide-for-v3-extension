@@ -424,10 +424,10 @@ function setStandardStreams(Module, stdin, stdout, stderr) {
       });
 }
 function finalizeBootstrap(API, config) {
-  (API.runPythonInternal_dict = API._pyodide._base.eval_code("{}")),
+  (API.runPythonInternal_dict = API._pyodide._base.eval_code.call({}, "{}")),
     (API.importlib = API.runPythonInternal("import importlib; importlib"));
   let import_module = API.importlib.import_module;
-  (API.sys = import_module("sys")), API.sys.path.insert(0, config.homedir);
+  (API.sys = import_module.call({}, "sys")), API.sys.path.insert.call({}, 0, config.homedir);
   let globals = API.runPythonInternal("import __main__; __main__.__dict__"),
     builtins = API.runPythonInternal("import builtins; builtins.__dict__");
   var builtins_dict;
@@ -447,16 +447,16 @@ function finalizeBootstrap(API, config) {
           : Reflect.get(target, symbol),
     }));
   let importhook = API._pyodide._importhook;
-  importhook.register_js_finder(),
-    importhook.register_js_module("js", config.jsglobals),
-    importhook.register_unvendored_stdlib_finder();
+  importhook.register_js_finder.call(),
+    importhook.register_js_module.call({}, "js", config.jsglobals),
+    importhook.register_unvendored_stdlib_finder.call();
   let pyodide = API.makePublicAPI();
   return (
-    importhook.register_js_module("pyodide_js", pyodide),
-    (API.pyodide_py = import_module("pyodide")),
-    (API.pyodide_code = import_module("pyodide.code")),
-    (API.pyodide_ffi = import_module("pyodide.ffi")),
-    (API.package_loader = import_module("pyodide._package_loader")),
+    importhook.register_js_module.call({}, "pyodide_js", pyodide),
+    (API.pyodide_py = import_module.call({},"pyodide")),
+    (API.pyodide_code = import_module.call({},"pyodide.code")),
+    (API.pyodide_ffi = import_module.call({},"pyodide.ffi")),
+    (API.package_loader = import_module.call({},"pyodide._package_loader")),
     (API.version = API.pyodide_py.__version__),
     (pyodide.pyodide_py = API.pyodide_py),
     (pyodide.version = API.version),
